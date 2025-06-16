@@ -62,7 +62,7 @@ const headerSuggestions = [
   { value: 'Accept-Charset' },
   { value: 'Accept-Language' },
   { value: 'Accept-Datetime' },
-  { value: 'X-DE-TOKEN' },
+  { value: 'xtoken' },
   { value: 'Cache-Control' },
   { value: 'Connection' },
   { value: 'Cookie' },

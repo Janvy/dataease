@@ -196,7 +196,7 @@ const loadArrearance = () => {
     showFoot.value = appearanceStore.getFoot === 'true'
     if (showFoot.value) {
       const content = appearanceStore.getFootContent
-      const myXss = new xss.FilterXSS({
+      const myXss = xss(content, {
         css: {
           whiteList: {
             'background-color': true,
@@ -209,20 +209,16 @@ const loadArrearance = () => {
             'padding-top': true,
             'padding-bottom': true
           }
-        },
-        whiteList: {
-          ...xss.whiteList,
-          p: ['style'],
-          span: ['style']
         }
       })
-      footContent.value = myXss.process(content)
+      footContent.value = myXss
     }
   }
 }
 const switchTab = (name: string) => {
   activeName.value = name || 'simple'
 }
+console.log('登录页面')
 onMounted(async () => {
   loadArrearance()
   if (!checkPlatform()) {
@@ -272,6 +268,20 @@ onMounted(async () => {
       loginContainerWidth.value = loginContainer.value?.offsetWidth
     })
   })
+
+  // 如果URL参数中存在token，则代表可能是第三方跳转，直接跳转到工作台
+  const hash = window.location.hash
+  const queryString = hash.split('?')[1]
+  const urlParams = new URLSearchParams(queryString)
+  const token = urlParams.get('token')
+  console.log('第三方登录，token', token)
+  if (token) {
+    //token存在双引号，需要去掉
+    userStore.setToken(token.replace(/"/g, ''))
+    const queryRedirectPath = getCurLocation()
+    router.push({ path: queryRedirectPath })
+    return
+  }
 })
 </script>
 

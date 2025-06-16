@@ -52,7 +52,7 @@ export const configHandler = config => {
     return config
   }
   if (wsCache.get('user.token')) {
-    config.headers['X-DE-TOKEN'] = wsCache.get('user.token')
+    config.headers['xtoken'] = wsCache.get('user.token')
     const expired = isExpired()
     if (expired && config.url !== refreshUrl) {
       if (!getRefreshStatus()) {
@@ -61,7 +61,7 @@ export const configHandler = config => {
           .then(res => {
             userStore.setToken(res.data.token)
             userStore.setExp(res.data.exp)
-            config.headers['X-DE-TOKEN'] = res.data.token
+            config.headers['xtoken'] = res.data.token
             delayExecute(res.data.token)
           })
           .catch(e => {
@@ -73,7 +73,7 @@ export const configHandler = config => {
       }
       const retry = new Promise(resolve => {
         cacheRequest(token => {
-          config.headers['X-DE-TOKEN'] = token
+          config.headers['xtoken'] = token
           resolve(config)
         })
       })
