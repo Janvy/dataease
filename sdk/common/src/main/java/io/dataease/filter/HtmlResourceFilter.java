@@ -5,6 +5,8 @@ import io.dataease.utils.JsonUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,7 @@ import java.io.IOException;
 @Component
 public class HtmlResourceFilter implements Filter, Ordered {
 
+    private static final Logger log = LoggerFactory.getLogger(HtmlResourceFilter.class);
     @Value("${dataease.http.cache:false}")
     private Boolean httpCache;
 
@@ -41,6 +44,7 @@ public class HtmlResourceFilter implements Filter, Ordered {
         try {
             filterChain.doFilter(servletRequest, httpResponse);
         }catch (Exception e){
+            log.error(e.getMessage(),e);
             httpResponse.setContentType("application/json");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

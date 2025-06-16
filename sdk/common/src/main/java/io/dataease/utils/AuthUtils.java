@@ -1,6 +1,7 @@
 package io.dataease.utils;
 
 import io.dataease.auth.bo.TokenUserBO;
+import io.dataease.auth.xtoken.AuthUserContext;
 import org.apache.commons.lang3.ObjectUtils;
 
 public class AuthUtils {
@@ -12,6 +13,14 @@ public class AuthUtils {
     public static TokenUserBO getUser() {
         if (ObjectUtils.isNotEmpty(USER_INFO.get()))
             return USER_INFO.get();
+
+        if (AuthUserContext.get() != null) {
+            TokenUserBO userBO = new TokenUserBO();
+            userBO.setUserId(AuthUserContext.get().getId());
+            userBO.setDefaultOid(AuthUserContext.get().getId());
+            setUser(userBO);
+            return userBO;
+        }
         return null;
     }
 

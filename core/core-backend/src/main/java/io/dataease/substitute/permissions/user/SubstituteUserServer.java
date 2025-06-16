@@ -2,6 +2,8 @@ package io.dataease.substitute.permissions.user;
 
 
 import io.dataease.api.permissions.user.vo.UserFormVO;
+import io.dataease.auth.xtoken.AuthUserContext;
+import io.dataease.auth.xtoken.User;
 import io.dataease.utils.IPUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,11 @@ public class SubstituteUserServer {
 
     @GetMapping("/info")
     public Map<String, Object> info() {
+        User user = AuthUserContext.get();
         Map<String, Object> result = new HashMap<>();
-        result.put("id", "1");
-        result.put("name", "管理员");
-        result.put("oid", "1");
+        result.put("id", user.getId());
+        result.put("name", user.getName());
+        result.put("oid", user.getUserBid());
         result.put("language", "zh-CN");
         return result;
     }

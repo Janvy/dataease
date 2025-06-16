@@ -18,10 +18,10 @@ spring:
       config: classpath:ehcache/ehcache.xml
   data:
     redis:
-      host: 127.0.0.1
+      host: 172.18.207.71
       port: 6379
-      password: 123456
       database: 0
+      password: testredis@123#
   jackson:
     parser:
       allow-numeric-leading-zeros: true
@@ -66,3 +66,31 @@ knife4j:
   setting:
     language: zh_cn
     enable-swagger-models: false
+
+module.auth.redis:
+  client-name: aciga-auth
+  host: 172.18.207.71
+  port: 6379
+  password: testredis@123#
+  database: 0
+  lettuce.pool.enabled: true
+  lettuce.pool.max-active: 1
+  timeout: 1000
+
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: xtoken
+  # jwt秘钥
+  jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+  # token有效期，单位s 默认30天, -1代表永不过期（7天）
+  timeout: 604800
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: 3600
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: jwt
+  # 是否输出操作日志
+  is-log: true
